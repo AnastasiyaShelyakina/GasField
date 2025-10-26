@@ -1,20 +1,12 @@
-﻿
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace GasField.Models
+﻿namespace GasField.DTOs
 {
-    public class Well
+    public class WellDto
     {
-        public int Id { get; set; }
         public double RoofGvk { get; set; }  // Кровля ГВК
         public double BottomGvk { get; set; } // Подошва ГВК
         public double RoofPerforation { get; set; } // Кровля перфорации
         public double BottomPerforation { get; set; } // Подошва перфорации
         public double? WaterCut { get; set; } // Обводненность
-        public int UkpgId { get; set; } // Код УКПГ
-
-        [ForeignKey("UkpgId")]
-        public Ukpg? Ukpg { get; set; }
-        
+        public int UkpgId { get; set; }
     }
 }

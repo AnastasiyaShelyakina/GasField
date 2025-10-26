@@ -42,15 +42,30 @@ namespace GasField.Data.Services
             }
         }
 
+
+
         public async Task<IEnumerable<UkpgDto>> GetAll()
         {
-            return await _context.Ukpgs.Select(x=> UkpgToDto(x)).ToListAsync();
-        }
+            var ukpg = await _context.Ukpgs.Select(u => new UkpgDto()
+            {
 
+                MonthlyProduction = u.MonthlyProduction,
+                WellCount = u.WellCount,
+                Wells = u.Wells.ToList(),
+
+            }).ToListAsync();
+            return ukpg;
+
+        }
         public async Task<UkpgDto> GetById(int id)
         {
-            var ukpg = await _context.Ukpgs.FindAsync(id);
-            return UkpgToDto(ukpg);
+            var ukpg = await _context.Ukpgs.Where(u => u.Id == id).Select(u => new UkpgDto()
+            {
+                MonthlyProduction = u.MonthlyProduction,
+                WellCount = u.WellCount,
+                Wells = u.Wells.ToList(),
+            }).FirstOrDefaultAsync();
+            return ukpg;
         }
 
         public async Task<UkpgDto> Update(int id, UkpgDto ukpgDto)
