@@ -12,6 +12,9 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<ApiContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString")));
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUkpgsService, UkpgService>();
+
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 var app = builder.Build();

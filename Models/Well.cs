@@ -16,6 +16,6 @@ namespace GasField.Models
 
         [ForeignKey("UkpgId")]
         public Ukpg Ukpg { get; set; }
-        //
+        
     }
 }
