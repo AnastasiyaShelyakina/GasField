@@ -34,22 +34,22 @@ namespace GasField.Controllers
             }
             return Ok(well);
         }
+        
         [HttpPut("{id}")]
-
-      public async Task<IActionResult> PutWell(int id, WellDto wellDto)
+        public async Task<IActionResult> PutWell(int id, UpdateWellDto wellDto)
         {
-            var wel = await _service.Update(id, wellDto);
-            if (wel == null)
-            {
+            var updated = await _service.Update(id, wellDto);
+            if (updated == null)
                 return NotFound();
-            }
-            return NoContent();
+
+            return Ok(updated);
         }
+
         [HttpPost]
-        public async Task<ActionResult<WellDto>> PostWell(WellDto wellDto)
+        public async Task<ActionResult<WellDto>> PostWell(UpdateWellDto wellDto)
         {
             var well = await _service.Add(wellDto);
-            return CreatedAtAction("GetWell", new { id = well.Id }, wellDto);
+            return CreatedAtAction(nameof(GetWell), new { id = well.Id }, well);
         }
 
 
@@ -60,6 +60,15 @@ namespace GasField.Controllers
             return NoContent();
 
         }
+
+        ///
+        [HttpGet("high-watercut/{ukpgId}/{threshold}")]
+        public async Task<ActionResult<IEnumerable<WellDto>>> GetHighWaterCutByUkpg(int ukpgId, double threshold)
+        {
+            var wells = await _service.GetHighWaterCutByUkpg(ukpgId, threshold);
+            return Ok(wells);
+        }
+
 
     }
 }

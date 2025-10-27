@@ -5,7 +5,7 @@
 namespace GasField.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigrations : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -34,7 +34,7 @@ namespace GasField.Migrations
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Age = table.Column<int>(type: "int", nullable: false),
                     PersonalNumber = table.Column<int>(type: "int", nullable: false),
-                    UsernameId = table.Column<int>(type: "int", nullable: true)
+                    UsernameId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -51,12 +51,17 @@ namespace GasField.Migrations
                     BottomGvk = table.Column<double>(type: "float", nullable: false),
                     RoofPerforation = table.Column<double>(type: "float", nullable: false),
                     BottomPerforation = table.Column<double>(type: "float", nullable: false),
-                    UkpgCode = table.Column<int>(type: "int", nullable: false),
-                    WaterCut = table.Column<double>(type: "float", nullable: false)
+                    UkpgId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Wells", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Wells_Ukpgs_UkpgId",
+                        column: x => x.UkpgId,
+                        principalTable: "Ukpgs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -84,14 +89,16 @@ namespace GasField.Migrations
                 column: "UserId",
                 unique: true,
                 filter: "[UserId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Wells_UkpgId",
+                table: "Wells",
+                column: "UkpgId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Ukpgs");
-
             migrationBuilder.DropTable(
                 name: "Username");
 
@@ -100,6 +107,9 @@ namespace GasField.Migrations
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Ukpgs");
         }
     }
 }

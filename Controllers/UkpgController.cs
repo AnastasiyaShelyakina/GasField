@@ -34,26 +34,42 @@ namespace GasField.Controllers
             }
             return Ok(ukpg);
         }
-        [HttpPut("{id}")]
+        /*        [HttpPut("{id}")]
 
-       public async Task<IActionResult> PutUkpg(int id, UkpgDto ukpgDto)
-        {
-           var ukpg = await _service.Update(id, ukpgDto);
-            if (ukpg == null)
-            {
-                return NotFound();
-            }
-            return NoContent();
-        }
+               public async Task<IActionResult> PutUkpg(int id, UkpgDto ukpgDto)
+                {
+                   var ukpg = await _service.Update(id, ukpgDto);
+                    if (ukpg == null)
+                    {
+                        return NotFound();
+                    }
+                    return NoContent();
+                }
+                [HttpPost]
+                public async Task<ActionResult<UkpgDto>> PostUkpg(UkpgDto ukpgDto)
+                {
+                    var ukpg = await _service.Add(ukpgDto);
+                    return CreatedAtAction("GetUkpg", new { id = ukpg.Id }, ukpgDto);
+                }*/
         [HttpPost]
-        public async Task<ActionResult<UkpgDto>> PostUkpg(UkpgDto ukpgDto)
+        public async Task<ActionResult<UkpgDto>> PostUkpg(UpdateUkpgDto ukpgDto)
         {
             var ukpg = await _service.Add(ukpgDto);
-            return CreatedAtAction("GetUkpg", new { id = ukpg.Id }, ukpgDto);
+            return CreatedAtAction(nameof(GetUkpg), new { id = ukpg.Id }, ukpg);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutUkpg(int id, UpdateUkpgDto ukpgDto)
+        {
+            var ukpg = await _service.Update(id, ukpgDto);
+            if (ukpg == null)
+                return NotFound();
+
+            return Ok(ukpg);
         }
 
 
-       [HttpDelete("{id}")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUkpg(int id)
         {
             await _service.Delete(id);

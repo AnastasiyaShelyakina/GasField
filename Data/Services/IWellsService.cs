@@ -7,8 +7,10 @@ namespace GasField.Data.Services
     {
         Task<IEnumerable<WellDto>> GetAll();
         Task<WellDto> GetById(int id);
-        Task<WellDto> Update(int id, WellDto wellDto);
-        Task<Well> Add(WellDto wellDto);
+        Task<WellDto> Update(int id, UpdateWellDto wellDto);
+        Task<WellDto> Add(UpdateWellDto wellDto);
         Task Delete(int id);
+        Task<IEnumerable<WellDto>> GetHighWaterCutByUkpg(int ukpgId, double threshold);
+
     }
 }

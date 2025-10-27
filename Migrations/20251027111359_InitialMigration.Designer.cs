@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GasField.Migrations
 {
     [DbContext(typeof(ApiContext))]
-    [Migration("20251025182904_Initial Migrations")]
-    partial class InitialMigrations
+    [Migration("20251027111359_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -63,7 +63,7 @@ namespace GasField.Migrations
                     b.Property<int>("PersonalNumber")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UsernameId")
+                    b.Property<int>("UsernameId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -114,13 +114,12 @@ namespace GasField.Migrations
                     b.Property<double>("RoofPerforation")
                         .HasColumnType("float");
 
-                    b.Property<int>("UkpgCode")
+                    b.Property<int>("UkpgId")
                         .HasColumnType("int");
 
-                    b.Property<double>("WaterCut")
-                        .HasColumnType("float");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("UkpgId");
 
                     b.ToTable("Wells");
                 });
@@ -132,6 +131,22 @@ namespace GasField.Migrations
                         .HasForeignKey("GasField.Models.Username", "UserId");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("GasField.Models.Well", b =>
+                {
+                    b.HasOne("GasField.Models.Ukpg", "Ukpg")
+                        .WithMany("Wells")
+                        .HasForeignKey("UkpgId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Ukpg");
+                });
+
+            modelBuilder.Entity("GasField.Models.Ukpg", b =>
+                {
+                    b.Navigation("Wells");
                 });
 
             modelBuilder.Entity("GasField.Models.User", b =>

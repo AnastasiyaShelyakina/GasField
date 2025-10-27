@@ -114,9 +114,6 @@ namespace GasField.Migrations
                     b.Property<int>("UkpgId")
                         .HasColumnType("int");
 
-                    b.Property<double>("WaterCut")
-                        .HasColumnType("float");
-
                     b.HasKey("Id");
 
                     b.HasIndex("UkpgId");
