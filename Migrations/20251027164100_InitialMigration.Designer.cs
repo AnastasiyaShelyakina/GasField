@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GasField.Migrations
 {
     [DbContext(typeof(ApiContext))]
-    [Migration("20251027111359_InitialMigration")]
+    [Migration("20251027164100_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -32,11 +32,9 @@ namespace GasField.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<double>("MonthlyProduction")
-                        .HasColumnType("float");
-
-                    b.Property<int>("WellCount")
-                        .HasColumnType("int");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -106,6 +104,9 @@ namespace GasField.Migrations
                         .HasColumnType("float");
 
                     b.Property<double>("BottomPerforation")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Extraction")
                         .HasColumnType("float");
 
                     b.Property<double>("RoofGvk")

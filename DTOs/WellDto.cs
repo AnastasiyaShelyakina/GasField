@@ -7,8 +7,9 @@
         public double BottomGvk { get; set; } // Подошва ГВК
         public double RoofPerforation { get; set; } // Кровля перфорации
         public double BottomPerforation { get; set; } // Подошва перфорации
+        public double Extraction { get; set; }
         public double WaterCut { get; set; }
-        public int UkpgId { get; set; }
+        //public int UkpgId { get; set; }
     }
 
     public class UpdateWellDto 
@@ -17,6 +18,7 @@
         public double BottomGvk { get; set; } // Подошва ГВК
         public double RoofPerforation { get; set; } // Кровля перфорации
         public double BottomPerforation { get; set; } // Подошва перфорации
+        public double Extraction { get; set; }
         public int UkpgId { get; set; }
 
     }

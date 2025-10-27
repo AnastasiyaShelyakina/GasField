@@ -23,8 +23,10 @@ namespace GasField.Data.Services
                 RoofPerforation=well.RoofPerforation,
                 BottomPerforation=well.BottomPerforation,
                 WaterCut = well.WaterCut,
-                UkpgId =well.UkpgId,
-            };
+                Extraction=well.Extraction,
+                //UkpgId =well.UkpgId,
+                 
+    };
         public async Task<WellDto> Add(UpdateWellDto wellDto)
         {
             var well = new Well()
@@ -34,6 +36,7 @@ namespace GasField.Data.Services
                 BottomGvk = wellDto.BottomGvk,
                 RoofPerforation = wellDto.RoofPerforation,
                 BottomPerforation = wellDto.BottomPerforation,
+                Extraction = wellDto.Extraction,
                 UkpgId = wellDto.UkpgId,
             };
             _context.Wells.Add(well);
@@ -77,6 +80,7 @@ namespace GasField.Data.Services
             well.BottomGvk=wellDto.BottomGvk;
             well.RoofPerforation=wellDto.RoofPerforation;
             well.BottomPerforation= wellDto.BottomPerforation;
+            well.Extraction = wellDto.Extraction;
             well.UkpgId=wellDto.UkpgId;
             }
             return WellToDto(well);
@@ -97,8 +101,9 @@ namespace GasField.Data.Services
                     BottomGvk = w.BottomGvk,
                     RoofPerforation = w.RoofPerforation,
                     BottomPerforation = w.BottomPerforation,
+                    Extraction = w.Extraction,
                     WaterCut = w.WaterCut,
-                    UkpgId = w.UkpgId
+                    //UkpgId = w.UkpgId
                 })
                 .ToList();
 

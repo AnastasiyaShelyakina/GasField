@@ -10,6 +10,7 @@ namespace GasField.Models
         public double BottomGvk { get; set; } // Подошва ГВК
         public double RoofPerforation { get; set; } // Кровля перфорации
         public double BottomPerforation { get; set; } // Подошва перфорации
+        public double Extraction { get; set; }
         public int UkpgId { get; set; } // Код УКПГ
 
         [ForeignKey("UkpgId")]
