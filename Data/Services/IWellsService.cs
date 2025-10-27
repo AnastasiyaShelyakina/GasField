@@ -11,6 +11,8 @@ namespace GasField.Data.Services
         Task<WellDto> Add(UpdateWellDto wellDto);
         Task Delete(int id);
         Task<IEnumerable<WellDto>> GetHighWaterCutByUkpg(int ukpgId, double threshold);
+        //Task<IEnumerable<WellDto>> GetTopWellsByExtraction(int topCount);
+        Task<IEnumerable<WellDto>> GetTopWellsByExtraction(int topCount, int ukpgId);
 
     }
 }

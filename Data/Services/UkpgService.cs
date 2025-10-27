@@ -12,14 +12,6 @@ namespace GasField.Data.Services
             _context = context;
 
         }
-        /*private static UkpgDto UkpgToDto(Ukpg ukpg) =>
-            new UkpgDto
-            {
-                Id = ukpg.Id,
-                MonthlyProduction=ukpg.MonthlyProduction,
-                WellCount =ukpg.WellCount
-
-            };*/
 
         private static UkpgDto UkpgToDto(Ukpg ukpg) =>
             new UkpgDto
@@ -35,31 +27,6 @@ namespace GasField.Data.Services
                 }).ToList()
             };
 
-
-        /*        private static UkpgDto UkpgToDto(Ukpg ukpg) =>
-                    new UkpgDto
-                    {
-                        Id = ukpg.Id,
-                        Name = ukpg.Name,
-                        WellCount = ukpg.WellCount,
-                        AverageExtraction = ukpg.AverageExtraction,
-                        Wells = ukpg.Wells
-                    };
-        */
-        /*        public async Task<UkpgDto> Add(UpdateUkpgDto ukpgDto)
-                {
-                    var ukpg = new Ukpg
-                    {
-                        MonthlyProduction = ukpgDto.MonthlyProduction,
-                        WellCount = ukpgDto.WellCount
-                    };
-
-                    _context.Ukpgs.Add(ukpg);
-                    await _context.SaveChangesAsync();
-
-                    // возвращаем DTO, а не саму модель
-                    return UkpgToDto(ukpg);
-                }*/
 
         public async Task<UkpgDto> Add(UpdateUkpgDto ukpgDto)
         {
@@ -86,19 +53,7 @@ namespace GasField.Data.Services
 
 
 
-        /*public async Task<IEnumerable<UkpgDto>> GetAll()
-        {
-            var ukpg = await _context.Ukpgs.Select(u => new UkpgDto()
-            {
-                Id=u.Id,
-                MonthlyProduction = u.MonthlyProduction,
-                WellCount = u.WellCount,
-                Wells = u.Wells.ToList(),
 
-            }).ToListAsync();
-            return ukpg;
-
-        }*/
 
         public async Task<IEnumerable<UkpgDto>> GetAll()
         {
@@ -108,16 +63,7 @@ namespace GasField.Data.Services
 
             return ukpgs.Select(UkpgToDto);
         }
-        /*public async Task<UkpgDto> GetById(int id)
-        {
-            var ukpg = await _context.Ukpgs.Where(u => u.Id == id).Select(u => new UkpgDto()
-            {   Id = u.Id,
-                MonthlyProduction = u.MonthlyProduction,
-                WellCount = u.WellCount,
-                Wells = u.Wells.ToList(),
-            }).FirstOrDefaultAsync();
-            return ukpg;
-        }*/
+
         public async Task<UkpgDto?> GetById(int id)
         {
             var ukpg = await _context.Ukpgs
@@ -127,19 +73,6 @@ namespace GasField.Data.Services
             return ukpg == null ? null : UkpgToDto(ukpg);
         }
 
-        /*public async Task<UkpgDto> Update(int id, UpdateUkpgDto ukpgDto)
-        {
-            var ukpg = await _context.Ukpgs.FindAsync(id);
-*//*            if (ukpg == null)
-                throw new Exception($"УКПГ с ID {id} не найден.");*//*
-
-            ukpg.MonthlyProduction = ukpgDto.MonthlyProduction;
-            ukpg.WellCount = ukpgDto.WellCount;
-
-            await _context.SaveChangesAsync();
-
-            return UkpgToDto(ukpg);
-        }*/
         public async Task<UkpgDto?> Update(int id, UpdateUkpgDto ukpgDto)
         {
             var ukpg = await _context.Ukpgs.FindAsync(id);
@@ -150,11 +83,13 @@ namespace GasField.Data.Services
 
             await _context.SaveChangesAsync();
 
-            // Подгружаем скважины для расчета AverageExtraction
+
             await _context.Entry(ukpg).Collection(u => u.Wells!).LoadAsync();
 
             return UkpgToDto(ukpg);
         }
+
+
 
         }
 

@@ -24,7 +24,6 @@ namespace GasField.Data.Services
                 BottomPerforation=well.BottomPerforation,
                 WaterCut = well.WaterCut,
                 Extraction=well.Extraction,
-                //UkpgId =well.UkpgId,
                  
     };
         public async Task<WellDto> Add(UpdateWellDto wellDto)
@@ -103,11 +102,39 @@ namespace GasField.Data.Services
                     BottomPerforation = w.BottomPerforation,
                     Extraction = w.Extraction,
                     WaterCut = w.WaterCut,
-                    //UkpgId = w.UkpgId
                 })
                 .ToList();
 
             return filtered;
+        }
+
+        /*        public async Task<IEnumerable<WellDto>> GetTopWellsByExtraction(int topCount)
+                {
+                    var wells = await _context.Wells
+                        .Include(w => w.Ukpg) // подгружаем УКПГ, чтобы показать имя
+                        .OrderByDescending(w => w.Extraction) // сортировка по добыче, по убыванию
+                        .Take(topCount) // берём топ N
+                        .Select(w => new WellDto
+                        {
+                            Extraction = w.Extraction
+                        })
+                        .ToListAsync();
+
+                    return wells;
+                }*/
+        public async Task<IEnumerable<WellDto>> GetTopWellsByExtraction(int topCount, int ukpgId)
+        {
+            var wells = await _context.Wells
+                .Where(w => w.UkpgId == ukpgId)      // фильтруем по УКПГ
+                .OrderByDescending(w => w.Extraction) // сортировка по добыче
+                .Take(topCount)                        // топ N
+                .Select(w => new WellDto
+                {
+                    Extraction = w.Extraction,
+                })
+                .ToListAsync();
+
+            return wells;
         }
 
 

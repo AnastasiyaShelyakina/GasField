@@ -69,6 +69,19 @@ namespace GasField.Controllers
             return Ok(wells);
         }
 
+        /*        [HttpGet("top/{count}")]
+                public async Task<ActionResult<IEnumerable<WellDto>>> GetTopWells(int count)
+                {
+                    var wells = await _service.GetTopWellsByExtraction(count);
+                    return Ok(wells);
+                }*/
+        [HttpGet("top-by-ukpg")]
+        public async Task<ActionResult<IEnumerable<WellDto>>> GetTopWellsByUkpg([FromQuery] int topCount, [FromQuery] int ukpgId)
+        {
+            var wells = await _service.GetTopWellsByExtraction(topCount, ukpgId);
+            return Ok(wells);
+        }
+
 
     }
 }
