@@ -2,6 +2,7 @@
 using GasField.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GasField.Controllers
 {
@@ -17,6 +18,7 @@ namespace GasField.Controllers
 
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<WellDto>>> GetWells()
         {
             var wells = await _service.GetAll();
@@ -24,6 +26,7 @@ namespace GasField.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<WellDto>> GetWell(int id)
         {
             var well = await _service.GetById(id);
@@ -36,6 +39,7 @@ namespace GasField.Controllers
         }
         
         [HttpPut("{id}")]
+        [Authorize(Roles = "Engineer")]
         public async Task<IActionResult> PutWell(int id, UpdateWellDto wellDto)
         {
             var updated = await _service.Update(id, wellDto);
@@ -46,6 +50,7 @@ namespace GasField.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Engineer")]
         public async Task<ActionResult<WellDto>> PostWell(UpdateWellDto wellDto)
         {
             var well = await _service.Add(wellDto);
@@ -54,6 +59,7 @@ namespace GasField.Controllers
 
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Engineer")]
         public async Task<IActionResult> DeleteWell(int id)
         {
             await _service.Delete(id);
@@ -63,6 +69,7 @@ namespace GasField.Controllers
 
         ///
         [HttpGet("high-watercut/{ukpgId}/{threshold}")]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<WellDto>>> GetHighWaterCutByUkpg(int ukpgId, double threshold)
         {
             var wells = await _service.GetHighWaterCutByUkpg(ukpgId, threshold);
@@ -76,6 +83,7 @@ namespace GasField.Controllers
                     return Ok(wells);
                 }*/
         [HttpGet("top-by-ukpg")]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<WellDto>>> GetTopWellsByUkpg([FromQuery] int topCount, [FromQuery] int ukpgId)
         {
             var wells = await _service.GetTopWellsByExtraction(topCount, ukpgId);

@@ -3,7 +3,7 @@ using GasField.DTOs;
 using GasField.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.AspNetCore.Authorization;
 namespace GasField.Controllers
 {
     [Route("api/[controller]")]
@@ -18,6 +18,7 @@ namespace GasField.Controllers
 
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<UkpgDto>>> GetUkpgs()
         {
             var ukpgs = await _service.GetAll();
@@ -25,6 +26,7 @@ namespace GasField.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<UkpgDto>> GetUkpg(int id)
         {
             var ukpg= await _service.GetById(id);
@@ -36,6 +38,7 @@ namespace GasField.Controllers
         }
         
         [HttpPost]
+        [Authorize(Roles = "Engineer")]
         public async Task<ActionResult<UkpgDto>> PostUkpg(UpdateUkpgDto ukpgDto)
         {
             var ukpg = await _service.Add(ukpgDto);
@@ -43,6 +46,7 @@ namespace GasField.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Engineer")]
         public async Task<IActionResult> PutUkpg(int id, UpdateUkpgDto ukpgDto)
         {
             var ukpg = await _service.Update(id, ukpgDto);
@@ -54,6 +58,7 @@ namespace GasField.Controllers
 
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Engineer")]
         public async Task<IActionResult> DeleteUkpg(int id)
         {
             await _service.Delete(id);
