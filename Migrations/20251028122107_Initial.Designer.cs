@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GasField.Migrations
 {
     [DbContext(typeof(ApiContext))]
-    [Migration("20251027205744_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20251028122107_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

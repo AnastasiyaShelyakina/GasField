@@ -22,7 +22,7 @@ namespace GasField.Controllers
             _context = context;
         }
 
-        // 🔹 Авторизация — выдача JWT-токена
+        //  Авторизация — выдача JWT-токена
         [HttpPost("token")]
         public async Task<IActionResult> Token([FromBody] LoginDTO loginDTO)
         {
@@ -56,7 +56,7 @@ namespace GasField.Controllers
             return Ok(response);
         }
 
-        // 🔹 Регистрация нового пользователя
+        //  Регистрация нового пользователя
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDTO registerDto)
         {

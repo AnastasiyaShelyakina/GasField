@@ -18,7 +18,7 @@ namespace GasField.Data.Services
             new WellDto
             {
                 Id = well.Id,
-                RoofGvk=well.RoofGvk,
+                RoofGvk =well.RoofGvk,
                 BottomGvk=well.BottomGvk,
                 RoofPerforation=well.RoofPerforation,
                 BottomPerforation=well.BottomPerforation,
@@ -26,11 +26,30 @@ namespace GasField.Data.Services
                 Extraction=well.Extraction,
                  
     };
+        /*        public async Task<WellDto> Add(UpdateWellDto wellDto)
+                {
+                    var well = new Well()
+                    {
+
+                        RoofGvk = wellDto.RoofGvk,
+                        BottomGvk = wellDto.BottomGvk,
+                        RoofPerforation = wellDto.RoofPerforation,
+                        BottomPerforation = wellDto.BottomPerforation,
+                        Extraction = wellDto.Extraction,
+                        UkpgId = wellDto.UkpgId,
+                    };
+                    _context.Wells.Add(well);
+                    await _context.SaveChangesAsync();
+
+
+
+                    return WellToDto(well);
+
+                }*/
         public async Task<WellDto> Add(UpdateWellDto wellDto)
         {
             var well = new Well()
             {
-                
                 RoofGvk = wellDto.RoofGvk,
                 BottomGvk = wellDto.BottomGvk,
                 RoofPerforation = wellDto.RoofPerforation,
@@ -41,11 +60,9 @@ namespace GasField.Data.Services
             _context.Wells.Add(well);
             await _context.SaveChangesAsync();
 
-
-
             return WellToDto(well);
-
         }
+
 
         public async Task Delete(int id)
         {
@@ -70,21 +87,38 @@ namespace GasField.Data.Services
         }
 
 
-        public async Task<WellDto> Update(int id, UpdateWellDto wellDto)
+        /*        public async Task<WellDto> Update(int id, UpdateWellDto wellDto)
+                {
+                    var well = await _context.Wells.FindAsync(id);
+                    if (well != null)
+                    { 
+                    well.RoofGvk=wellDto.RoofGvk;
+                    well.BottomGvk=wellDto.BottomGvk;
+                    well.RoofPerforation=wellDto.RoofPerforation;
+                    well.BottomPerforation= wellDto.BottomPerforation;
+                    well.Extraction = wellDto.Extraction;
+                    well.UkpgId=wellDto.UkpgId;
+                    }
+                    return WellToDto(well);
+                }
+        */
+        public async Task<WellDto?> Update(int id, UpdateWellDto wellDto)
         {
             var well = await _context.Wells.FindAsync(id);
-            if (well != null)
-            { 
-            well.RoofGvk=wellDto.RoofGvk;
-            well.BottomGvk=wellDto.BottomGvk;
-            well.RoofPerforation=wellDto.RoofPerforation;
-            well.BottomPerforation= wellDto.BottomPerforation;
+            if (well == null)
+                return null;
+
+            well.RoofGvk = wellDto.RoofGvk;
+            well.BottomGvk = wellDto.BottomGvk;
+            well.RoofPerforation = wellDto.RoofPerforation;
+            well.BottomPerforation = wellDto.BottomPerforation;
             well.Extraction = wellDto.Extraction;
-            well.UkpgId=wellDto.UkpgId;
-            }
+            well.UkpgId = wellDto.UkpgId;
+
+            await _context.SaveChangesAsync(); // 
+
             return WellToDto(well);
         }
-
 
         public async Task<IEnumerable<WellDto>> GetHighWaterCutByUkpg(int ukpgId, double threshold)
         {
@@ -96,6 +130,7 @@ namespace GasField.Data.Services
                 .Where(w => w.WaterCut > threshold)
                 .Select(w => new WellDto
                 {
+                    Id = w.Id,
                     RoofGvk = w.RoofGvk,
                     BottomGvk = w.BottomGvk,
                     RoofPerforation = w.RoofPerforation,
@@ -108,26 +143,13 @@ namespace GasField.Data.Services
             return filtered;
         }
 
-        /*        public async Task<IEnumerable<WellDto>> GetTopWellsByExtraction(int topCount)
-                {
-                    var wells = await _context.Wells
-                        .Include(w => w.Ukpg) // подгружаем УКПГ, чтобы показать имя
-                        .OrderByDescending(w => w.Extraction) // сортировка по добыче, по убыванию
-                        .Take(topCount) // берём топ N
-                        .Select(w => new WellDto
-                        {
-                            Extraction = w.Extraction
-                        })
-                        .ToListAsync();
 
-                    return wells;
-                }*/
-        public async Task<IEnumerable<WellDto>> GetTopWellsByExtraction(int topCount, int ukpgId)
+        /*public async Task<IEnumerable<WellDto>> GetTopWellsByExtraction(int ukpgId, int thresho)
         {
             var wells = await _context.Wells
                 .Where(w => w.UkpgId == ukpgId)      // фильтруем по УКПГ
                 .OrderByDescending(w => w.Extraction) // сортировка по добыче
-                .Take(topCount)                        // топ N
+                .Take(thresho)                        // топ N
                 .Select(w => new WellDto
                 {
                     Extraction = w.Extraction,
@@ -135,7 +157,28 @@ namespace GasField.Data.Services
                 .ToListAsync();
 
             return wells;
+        }*/
+        public async Task<IEnumerable<WellDto>> GetTopWellsByExtraction(int ukpgId, int count)
+        {
+            var wells = await _context.Wells
+                .Where(w => w.UkpgId == ukpgId)
+                .OrderByDescending(w => w.Extraction)
+                .Take(count)
+                .Select(w => new WellDto
+                {
+                    Id = w.Id,
+                    RoofGvk = w.RoofGvk,
+                    BottomGvk = w.BottomGvk,
+                    RoofPerforation = w.RoofPerforation,
+                    BottomPerforation = w.BottomPerforation,
+                    Extraction = w.Extraction,
+                    WaterCut = w.WaterCut
+                })
+                .ToListAsync();
+
+            return wells;
         }
+
 
 
     }

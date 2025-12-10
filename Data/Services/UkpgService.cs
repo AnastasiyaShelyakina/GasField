@@ -23,8 +23,14 @@ namespace GasField.Data.Services
                 Wells = ukpg.Wells?.Select(w => new WellDto
                 {
                     Id = w.Id,
-                    Extraction = w.Extraction
+                    RoofGvk = w.RoofGvk,
+                    BottomGvk = w.BottomGvk,
+                    RoofPerforation = w.RoofPerforation,
+                    BottomPerforation = w.BottomPerforation,
+                    Extraction = w.Extraction,
+                    WaterCut = w.WaterCut
                 }).ToList()
+
             };
 
 
