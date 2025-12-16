@@ -102,11 +102,28 @@ namespace GasField.Data.Services
                     return WellToDto(well);
                 }
         */
+        /*        public async Task<WellDto?> Update(int id, UpdateWellDto wellDto)
+                {
+                    var well = await _context.Wells.FindAsync(id);
+                    if (well == null)
+                        return null;
+
+                    well.RoofGvk = wellDto.RoofGvk;
+                    well.BottomGvk = wellDto.BottomGvk;
+                    well.RoofPerforation = wellDto.RoofPerforation;
+                    well.BottomPerforation = wellDto.BottomPerforation;
+                    well.Extraction = wellDto.Extraction;
+                    well.UkpgId = wellDto.UkpgId;
+
+                    await _context.SaveChangesAsync(); // 
+
+                    return WellToDto(well);
+                }
+        */
         public async Task<WellDto?> Update(int id, UpdateWellDto wellDto)
         {
             var well = await _context.Wells.FindAsync(id);
-            if (well == null)
-                return null;
+            if (well == null) return null;
 
             well.RoofGvk = wellDto.RoofGvk;
             well.BottomGvk = wellDto.BottomGvk;
@@ -115,11 +132,9 @@ namespace GasField.Data.Services
             well.Extraction = wellDto.Extraction;
             well.UkpgId = wellDto.UkpgId;
 
-            await _context.SaveChangesAsync(); // 
-
+            await _context.SaveChangesAsync();
             return WellToDto(well);
         }
-
         public async Task<IEnumerable<WellDto>> GetHighWaterCutByUkpg(int ukpgId, double threshold)
         {
             var wells = await _context.Wells

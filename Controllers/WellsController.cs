@@ -18,7 +18,7 @@ namespace GasField.Controllers
 
 
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<IEnumerable<WellDto>>> GetWells()
         {
             var wells = await _service.GetAll();
